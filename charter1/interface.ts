@@ -132,3 +132,104 @@ console.log(createSquare({ color: 'yellow' }))
     constructor(h: number, m: number) {}
   }
 }
+
+// 类静态部分与实例部分
+{
+  // interface ClockConstructor {
+  //   new (hour: string, minute: number)
+  // }
+  // // error
+  // class Clock implements ClockConstructor {
+  //   constructor(hour, minute) {
+
+  //   }
+  // }
+
+  interface ClockConstructor {
+    new (hour: number, minute: number)
+  }
+  interface ClockInterface {
+    tick(): void
+  }
+
+  class DigitalClock implements ClockInterface {
+    tick() {
+      console.log('da da da ')
+    }
+    constructor(hour: number, minute: number) {}
+  }
+
+  class AnalogClock implements ClockInterface {
+    tick() {
+      console.log('tick top')
+    }
+    constructor(hour: number, minute: number) {}
+  }
+
+  function createClock(
+    ctor: ClockConstructor,
+    hour: number,
+    minute: number
+  ): ClockInterface {
+    return new ctor(hour, minute)
+  }
+}
+
+// 接口继承
+{
+  interface Shape {
+    color: string
+  }
+  interface Square extends Shape {
+    sideLength: Number
+  }
+
+  let mySquare = {} as Square
+  mySquare.color = 'red'
+  mySquare.sideLength = 3
+
+  // 一个接口可以继承多个接口
+  interface rect extends Square, Shape {
+    area: number
+  }
+  let myRect = {} as rect
+  myRect.color = 'green'
+  myRect.sideLength = 3
+  myRect.area = 20
+}
+
+// 混合类型
+{
+  interface Counter {
+    (start: number): void
+    interval: number
+    reset(): void
+  }
+
+  function getCounter(): Counter {
+    let counter = function(start: number) {} as Counter
+    counter.interval = 123
+    counter.reset = function() {}
+    return counter
+  }
+}
+
+// 接口继承类
+{
+  class Control {
+    private state: any
+  }
+
+  interface SelectableControl extends Control {
+    select(): void
+  }
+
+  class Button extends Control implements SelectableControl {
+    select() {}
+  }
+
+  // 当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型只能被这个类或其子类所实现（implement）。
+  // class ImageC implements SelectableControl {
+  //   select() {}
+  // }
+}
