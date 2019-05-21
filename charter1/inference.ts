@@ -33,5 +33,7 @@
 
 // 上下文类型
 {
-
+  window.onmousedown = function(mouseEvent) {
+    // console.log(mouseEvent.clickTime)  // Error
+  }
 }
